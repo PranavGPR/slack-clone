@@ -1,21 +1,22 @@
 const socket = io("http://localhost:5000");
-const adminSocket = io("http://localhost:5000/admin");
+const wikiSocket = io("http://localhost:5000/wiki");
+const mozillaSocket = io("http://localhost:5000/mozilla");
+const linuxSocket = io("http://localhost:5000/linux");
 
-socket.on("messageFromServer", (data) => {
-  console.log(data);
-  socket.emit("messageToServer", { message: "Data from the Client!" });
-});
+socket.on("nsList", (nsData) => {
+  console.log("The list of namespaces has arrived!");
+  let namespacesDiv = document.querySelector(".namespaces");
+  namespacesDiv.innerHTML = "";
+  nsData.forEach((ns) => {
+    namespacesDiv.innerHTML += `<div class="namespace" ns=${ns.endpoint}><img src="${ns.img}" /> </div>`;
+  });
 
-socket.on("joined", (data) => {
-  console.log(data);
-});
-
-adminSocket.on("welcome", (data) => {
-  console.log(data);
-});
-
-document.querySelector("#message-form").addEventListener("submit", (event) => {
-  event.preventDefault();
-  const newMessage = document.querySelector("#user-message").value;
-  socket.emit("newMessageToServer", { message: newMessage });
+  Array.from(document.getElementsByClassName("namespace")).forEach(
+    (element) => {
+      element.addEventListener("click", (e) => {
+        const nsEndpoint = element.getAttribute("ns");
+        console.log(`${nsEndpoint} is where I should go now!`);
+      });
+    }
+  );
 });

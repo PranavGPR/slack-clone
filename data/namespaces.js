@@ -1,5 +1,5 @@
 // Bring in the room class
-const Namespace = require("../classes/Namespace");
+const Namespace = require("../classes/Namespaces");
 const Room = require("../classes/Room");
 
 // Set up the namespaces
@@ -23,8 +23,6 @@ let linuxNs = new Namespace(
   "/linux"
 );
 
-namespaces.push(wikiNs, mozNs, linuxNs);
-
 // Make the main room and add it to rooms. it will ALWAYS be 0
 wikiNs.addRoom(new Room(0, "New Articles", "Wiki"));
 wikiNs.addRoom(new Room(1, "Editors", "Wiki"));
@@ -39,5 +37,7 @@ linuxNs.addRoom(new Room(0, "Debian", "Linux"));
 linuxNs.addRoom(new Room(1, "Red Hat", "Linux"));
 linuxNs.addRoom(new Room(2, "MacOs", "Linux"));
 linuxNs.addRoom(new Room(3, "Kernal Development", "Linux"));
+
+namespaces.push(wikiNs, mozNs, linuxNs);
 
 module.exports = namespaces;
