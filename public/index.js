@@ -1,21 +1,21 @@
 const socket = io("http://localhost:5000");
-
-socket.on("connect", (data) => {
-  let h1 = document.getElementById("id");
-  h1.innerHTML = `Welcome ${socket.id}!`;
-});
-
-document.querySelector("#message-form").addEventListener("submit", (event) => {
-  event.preventDefault();
-  const newMessage = document.querySelector("#user-message").value;
-  socket.emit("newMessageToServer", { message: newMessage });
-});
+const adminSocket = io("http://localhost:5000/admin");
 
 socket.on("messageFromServer", (data) => {
   console.log(data);
   socket.emit("messageToServer", { message: "Data from the Client!" });
 });
 
-socket.on("messageToClients", (data) => {
-  document.querySelector("#messages").innerHTML += `<li>${data.message}</li>`;
+socket.on("joined", (data) => {
+  console.log(data);
+});
+
+adminSocket.on("welcome", (data) => {
+  console.log(data);
+});
+
+document.querySelector("#message-form").addEventListener("submit", (event) => {
+  event.preventDefault();
+  const newMessage = document.querySelector("#user-message").value;
+  socket.emit("newMessageToServer", { message: newMessage });
 });
