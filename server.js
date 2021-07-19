@@ -26,6 +26,8 @@ io.on("connection", (socket) => {
 
 namespaces.forEach((namespace) => {
   io.of(namespace.endpoint).on("connection", (socket) => {
+    const username = socket.handshake.query.username;
+
     console.log(`${socket.id} has joined ${namespace.endpoint}`);
 
     socket.emit("wikiRoomLoad", namespace.rooms);
@@ -49,7 +51,7 @@ namespaces.forEach((namespace) => {
       const fullMessage = {
         text: data.text,
         time: Date.now(),
-        username: "rbunch",
+        username,
         avatar: "https://via.placeholder.com/30",
       };
 
