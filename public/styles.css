@@ -97,12 +97,8 @@ input {
   padding: 0;
   color: #3b4048;
   max-height: 85%;
-  overflow: scroll;
+  /* overflow: scroll; */
 }
-/* #messages li .user-image {
-  width: 50px;
-  display: inline-block;
-} */
 #messages li .user-message {
   margin-left: 10px;
   color: #222;

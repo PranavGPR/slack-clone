@@ -25,5 +25,36 @@ io.on("connection", (socket) => {
 });
 
 namespaces.forEach((namespace) => {
-  io.of(namespace.endpoint).on("connection", (socket) => {});
+  io.of(namespace.endpoint).on("connection", (socket) => {
+    console.log(`${socket.id} has joined ${namespace.endpoint}`);
+
+    socket.emit("wikiRoomLoad", namespaces[0].rooms);
+
+    socket.on("joinRoom", async (roomToJoin) => {
+      // const roomToLeave = Array.from(socket.rooms)[1];
+      // socket.leave(roomToLeave);
+      // await updateUsersInRoom(namespace, roomToLeave);
+
+      socket.join(roomToJoin);
+      await updateUsersInRoom(namespace, roomToJoin);
+    });
+
+    socket.on("newMessageToServer", (data) => {
+      const fullMessage = {
+        text: data.text,
+        time: Date.now(),
+        username: "rbunch",
+        avatar: "https://via.placeholder.com/30",
+      };
+
+      const roomTitle = Array.from(socket.rooms)[1];
+
+      io.of("/wiki").to(roomTitle).emit("messageToClient", fullMessage);
+    });
+  });
 });
+
+async function updateUsersInRoom(namespace, roomToJoin) {
+  const clients = await io.of(namespace.endpoint).in(roomToJoin).allSockets();
+  io.of(namespace.endpoint).in(roomToJoin).emit("updateMembers", clients.size);
+}

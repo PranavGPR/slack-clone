@@ -1,7 +1,5 @@
 const socket = io("http://localhost:5000");
-const wikiSocket = io("http://localhost:5000/wiki");
-const mozillaSocket = io("http://localhost:5000/mozilla");
-const linuxSocket = io("http://localhost:5000/linux");
+let wikiSocket = "";
 
 socket.on("nsList", (nsData) => {
   console.log("The list of namespaces has arrived!");
@@ -15,8 +13,9 @@ socket.on("nsList", (nsData) => {
     (element) => {
       element.addEventListener("click", (e) => {
         const nsEndpoint = element.getAttribute("ns");
-        console.log(`${nsEndpoint} is where I should go now!`);
+        console.log(`${nsEndpoint} is where I should go now`);
       });
     }
   );
+  joinNs("/wiki");
 });
