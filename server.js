@@ -37,6 +37,12 @@ namespaces.forEach((namespace) => {
 
       socket.join(roomToJoin);
       await updateUsersInRoom(namespace, roomToJoin);
+
+      const nsRoom = namespace.rooms.find((room) => {
+        return room.roomTitle === roomToJoin;
+      });
+
+      socket.emit("historyCatchUp", nsRoom.history);
     });
 
     socket.on("newMessageToServer", (data) => {
@@ -54,7 +60,6 @@ namespaces.forEach((namespace) => {
       });
 
       nsRoom.addMessage(fullMessage);
-      console.log(nsRoom);
 
       io.of("/wiki").to(roomTitle).emit("messageToClients", fullMessage);
     });

@@ -1,6 +1,6 @@
 function joinNs(endpoint) {
-  wikiSocket = io(`http://localhost:5000${endpoint}`);
-  wikiSocket.on("wikiRoomLoad", (rooms) => {
+  nsSocket = io(`http://localhost:5000${endpoint}`);
+  nsSocket.on("wikiRoomLoad", (rooms) => {
     let roomList = document.querySelector(".room-list");
     roomList.innerHTML = "";
     rooms.forEach((room) => {
@@ -26,7 +26,7 @@ function joinNs(endpoint) {
     joinRoom(topRoomName);
   });
 
-  wikiSocket.on("messageToClients", (msg) => {
+  nsSocket.on("messageToClients", (msg) => {
     const newMsg = buildHTML(msg);
     document.querySelector("#messages").innerHTML += newMsg;
   });
@@ -39,7 +39,7 @@ function joinNs(endpoint) {
 function formSubmission(event) {
   event.preventDefault();
   const messageField = document.querySelector("#user-message");
-  wikiSocket.emit("newMessageToServer", { text: messageField.value });
+  nsSocket.emit("newMessageToServer", { text: messageField.value });
   messageField.value = "";
 }
 

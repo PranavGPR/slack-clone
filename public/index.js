@@ -1,5 +1,5 @@
 const socket = io("http://localhost:5000");
-let wikiSocket = "";
+let nsSocket = "";
 
 socket.on("nsList", (nsData) => {
   console.log("The list of namespaces has arrived!");
