@@ -26,7 +26,7 @@ function joinNs(endpoint) {
     joinRoom(topRoomName);
   });
 
-  wikiSocket.on("messageToClient", (msg) => {
+  wikiSocket.on("messageToClients", (msg) => {
     const newMsg = buildHTML(msg);
     document.querySelector("#messages").innerHTML += newMsg;
   });

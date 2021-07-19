@@ -49,7 +49,14 @@ namespaces.forEach((namespace) => {
 
       const roomTitle = Array.from(socket.rooms)[1];
 
-      io.of("/wiki").to(roomTitle).emit("messageToClient", fullMessage);
+      const nsRoom = namespace.rooms.find((room) => {
+        return room.roomTitle === roomTitle;
+      });
+
+      nsRoom.addMessage(fullMessage);
+      console.log(nsRoom);
+
+      io.of("/wiki").to(roomTitle).emit("messageToClients", fullMessage);
     });
   });
 });
