@@ -28,12 +28,12 @@ namespaces.forEach((namespace) => {
   io.of(namespace.endpoint).on("connection", (socket) => {
     console.log(`${socket.id} has joined ${namespace.endpoint}`);
 
-    socket.emit("wikiRoomLoad", namespaces[0].rooms);
+    socket.emit("wikiRoomLoad", namespace.rooms);
 
     socket.on("joinRoom", async (roomToJoin) => {
-      // const roomToLeave = Array.from(socket.rooms)[1];
-      // socket.leave(roomToLeave);
-      // await updateUsersInRoom(namespace, roomToLeave);
+      const roomToLeave = Array.from(socket.rooms)[1];
+      socket.leave(roomToLeave);
+      await updateUsersInRoom(namespace, roomToLeave);
 
       socket.join(roomToJoin);
       await updateUsersInRoom(namespace, roomToJoin);
@@ -61,7 +61,9 @@ namespaces.forEach((namespace) => {
 
       nsRoom.addMessage(fullMessage);
 
-      io.of("/wiki").to(roomTitle).emit("messageToClients", fullMessage);
+      io.of(namespace.endpoint)
+        .to(roomTitle)
+        .emit("messageToClients", fullMessage);
     });
   });
 });

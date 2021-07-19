@@ -11,9 +11,9 @@ socket.on("nsList", (nsData) => {
 
   Array.from(document.getElementsByClassName("namespace")).forEach(
     (element) => {
-      element.addEventListener("click", (e) => {
+      element.addEventListener("click", () => {
         const nsEndpoint = element.getAttribute("ns");
-        console.log(`${nsEndpoint} is where I should go now`);
+        joinNs(nsEndpoint);
       });
     }
   );

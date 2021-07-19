@@ -1,4 +1,10 @@
 function joinNs(endpoint) {
+  if (nsSocket) {
+    nsSocket.close();
+    document
+      .querySelector("#user-input")
+      .removeEventListener("submit", formSubmission);
+  }
   nsSocket = io(`http://localhost:5000${endpoint}`);
   nsSocket.on("wikiRoomLoad", (rooms) => {
     let roomList = document.querySelector(".room-list");
@@ -17,7 +23,7 @@ function joinNs(endpoint) {
     let roomNodes = document.getElementsByClassName("room");
     Array.from(roomNodes).forEach((element) => {
       element.addEventListener("click", (e) => {
-        console.log(`Someone clicked on ${e.target.innerText}`);
+        joinRoom(e.target.innerText);
       });
     });
 
